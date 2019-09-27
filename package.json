@@ -1,0 +1,35 @@
+{
+  "name": "clon-twitter-app",
+  "version": "1.0.0",
+  "description": "Clon-Twitter-API",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yegaston/Clon-Twitter-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yegaston/Clon-Twitter-API/issues"
+  },
+  "homepage": "https://github.com/Yegaston/Clon-Twitter-API#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1",
+    "morgan": "^1.9.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
+  }
+}
