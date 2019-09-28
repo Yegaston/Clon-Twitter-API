@@ -1,11 +1,10 @@
 const request = require("supertest");
 const express = require("express");
-const server = require('../server');
-
+const app = express();
 
 describe("GET /api", () => {
-  it("Reciving posts??", async() => {
-    request(server)
+  it("Reciving posts??", async () => {
+    request(app)
       .get("/api")
       .expect(200);
   });
