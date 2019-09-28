@@ -4,7 +4,7 @@
   "description": "Clon-Twitter-API",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=10000",
     "testsv": "cross-env NODE_ENV=test node src/index.js",
     "start": "cross-env NODE_ENV=prod node src/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon src/index.js"
