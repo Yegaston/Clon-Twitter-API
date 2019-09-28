@@ -3,9 +3,7 @@ const app = express();
 const morgan = require("morgan");
 class server {
   constructor() {
-    this.listening();
-    this.middlewares();
-    this.routes();
+    var sv;
   }
 
   async middlewares() {
@@ -13,18 +11,24 @@ class server {
   }
 
   routes() {
-    app.use('/api', require("./routes/posts"));
+    app.use("/api", require("./routes/posts"));
   }
 
   async listening() {
-    app.set("port", process.env.PORT || 3000);
+    this.sv = app.set("port", process.env.PORT || 3000);
 
     try {
       await app.listen(app.get("port"));
       console.log("Servidor running in port", app.get("port"));
+      this.middlewares();
+      this.routes();
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async close() {
+    this.sv.close;
   }
 }
 
