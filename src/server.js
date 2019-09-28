@@ -1,30 +1,24 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-class server {
-  constructor() {
-    var sv;
-  }
 
-  async middlewares() {
-    app.use(morgan("dev"));
-  }
+let sv;
+// Settings
+app.set("port", process.env.PORT || 3000);
 
-  routes() {
-    app.use("/api", require("./routes/posts"));
-  }
+// Middlewares
+app.use(morgan("dev"));
 
-  async listening() {
-    this.sv = app.set("port", process.env.PORT || 3000);
+// Routes
+app.use("/api", require("./routes/posts"));
 
-    try {
-      await app.listen(app.get("port"));
-      console.log("Servidor running in port", app.get("port"));
-      this.middlewares();
-      this.routes();
-    } catch (error) {
-      console.error(error);
-    }
+async function listen() {
+  try {
+    sv = await app.listen(app.get("port"));
+    console.log("Servidor running in port", app.get("port"));
+  } catch (error) {
+    console.error(error);
+
   }
 
   async close() {
@@ -32,4 +26,18 @@ class server {
   }
 }
 
-module.exports = server;
+const close = async () => {
+  try {
+    await sv.close();
+    console.log("Connection close");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = {
+  app: app,
+  listen: listen,
+  close: close,
+  sv: sv
+};
