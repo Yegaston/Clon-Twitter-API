@@ -1,7 +1,6 @@
 const supertest = require("supertest");
-// const posts = require("./posts");
-
 const { app } = require("../server");
+
 
 afterEach(async () => {});
 describe("GET /api", () => {

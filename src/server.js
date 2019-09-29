@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+
 let sv;
 // Settings
 app.set("port", process.env.PORT || 3000);
@@ -17,6 +18,11 @@ async function listen() {
     console.log("Servidor running in port", app.get("port"));
   } catch (error) {
     console.error(error);
+
+  }
+
+  async close() {
+    this.sv.close;
   }
 }
 
