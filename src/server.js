@@ -8,6 +8,8 @@ app.set("port", process.env.PORT || 3000);
 
 // Middlewares
 app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use("/api", require("./routes/posts"));
@@ -18,11 +20,6 @@ async function listen() {
     console.log("Servidor running in port", app.get("port"));
   } catch (error) {
     console.error(error);
-
-  }
-
-  async close() {
-    this.sv.close;
   }
 }
 
