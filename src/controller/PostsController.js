@@ -28,5 +28,19 @@ module.exports = {
     } catch (error) {
       return res.status(400).json(error);
     }
+  },
+
+  getOnePost: async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      const post = await Post.find({ _id: id });
+      if (post.length === 0) {
+        return await res.status(200).json({ postDoestExist: id });
+      }
+      return res.status(200).json(post);
+    } catch (error) {
+      return res.status(400).json(error);
+    }
   }
 };
