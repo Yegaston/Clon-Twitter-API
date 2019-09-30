@@ -20,6 +20,7 @@ jobs:
       with:
         version: ${{ matrix.node_version }}
 
+    - services: mongodb
     - name: npm install, build and test
       run: |
         npm install
