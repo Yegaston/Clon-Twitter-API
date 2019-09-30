@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
   res.end();
 });
 
-router.post("/posts", createPost);
+router.post("/post", createPost);
 
 module.exports = router;
