@@ -8,7 +8,7 @@ const database = new db();
 
 const post = {};
 
-describe("post /notes", async () => {
+describe("Tests api /posts", async () => {
   before(done => {
     database
       .startConnection()
@@ -21,6 +21,8 @@ describe("post /notes", async () => {
       .then(() => done())
       .catch(err => done(err));
   });
+
+  let postId;
 
   it("OK, creating a new post works", done => {
     request(app)
@@ -40,7 +42,20 @@ describe("post /notes", async () => {
       })
       .then(res => {
         expect(res.body).to.contain.property("_id");
+        postId = res.body._id;
         expect(res.statusCode).to.equal(201);
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it("Can find post with id", done => {
+    request(app)
+      .get(`/api/post/${postId}`)
+      .then(res => {
+        expect(res.body[0])
+          .to.contain.property("_id")
+          .equals(postId);
         done();
       })
       .catch(err => done(err));
@@ -84,10 +99,22 @@ describe("post /notes", async () => {
     request(app)
       .get("/api/posts")
       .then(res => {
-        expect(res.body).to.contain.property("collection")
+        expect(res.body).to.contain.property("collection");
         expect(res.statusCode).to.equal(200);
         Post.collection.drop();
         done();
       });
+  });
+
+  it("Can find post with id", done => {
+    request(app)
+      .get(`/api/post/${postId}`)
+      .then(res => {
+        expect(res.body)
+          .to.contain.property("postDoestExist")
+          .equals(postId);
+        done();
+      })
+      .catch(err => done(err));
   });
 });

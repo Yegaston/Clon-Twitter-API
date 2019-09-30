@@ -1,5 +1,9 @@
 const express = require("express");
-const { createPost, getAllPosts } = require("../controller/PostsController");
+const {
+  createPost,
+  getAllPosts,
+  getOnePost
+} = require("../controller/PostsController");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -8,7 +12,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/posts", getAllPosts);
-
+router.get("/post/:id", getOnePost);
 router.post("/post", createPost);
 
 module.exports = router;
