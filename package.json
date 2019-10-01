@@ -23,8 +23,10 @@
   "dependencies": {
     "cross-env": "^6.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "mongoose": "^5.7.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "passport-local": "^1.0.0"
   },
   "jest": {
     "testEnvironment": "node",

@@ -5,16 +5,16 @@ module.exports = {
     const newPost = new Post(req.body);
     if (req.body.body.length <= 0) {
       res.status(400).json({ error: "Bad post" });
-      res.end();
-    }
-    try {
-      const user = await newPost.save();
-      res.status(201).json(user);
-      res.end();
-    } catch (error) {
-      console.error(error);
-      res.status(400).json(error);
-      res.end();
+    } else {
+      try {
+        const user = await newPost.save();
+        res.status(201).json(user);
+        res.end();
+      } catch (error) {
+        console.error(error);
+        res.status(400).json(error);
+        res.end();
+      }
     }
   },
 
@@ -41,6 +41,22 @@ module.exports = {
       return res.status(200).json(post);
     } catch (error) {
       return res.status(400).json(error);
+    }
+  },
+
+  deleteOnePost: async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      console.log(id);
+      const response = await Post.findByIdAndDelete(id);
+      if (response === null) {
+        return res.status(200).json({ postDoestExist: id });
+      }
+      return res.status(200).json({ postDelete: response._id });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
     }
   }
 };

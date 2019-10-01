@@ -6,8 +6,6 @@ const db = require("../../src/db");
 
 const database = new db();
 
-const post = {};
-
 describe("Tests api /posts", async () => {
   before(done => {
     database
@@ -61,7 +59,7 @@ describe("Tests api /posts", async () => {
       .catch(err => done(err));
   });
 
-  it("The post dont have a title.", done => {
+  it("The post dont have a body.", done => {
     request(app)
       .post("/api/post")
       .send({
@@ -90,18 +88,37 @@ describe("Tests api /posts", async () => {
       .get("/api/posts")
       .then(res => {
         expect(res.statusCode).to.equal(200);
-        Post.collection.drop();
+        done();
+      });
+  });
+
+  it("Can delete post with id", done => {
+    request(app)
+      .delete(`/api/post/${postId}`)
+      .then(res => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.contain.property("postDelete");
+        done();
+      });
+  });
+
+  it("Can delete post with id", done => {
+    request(app)
+      .delete(`/api/post/${postId}`)
+      .then(res => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.contain.property("postDoestExist");
         done();
       });
   });
 
   it("Getting none posts", done => {
+    Post.db.dropDatabase();
     request(app)
       .get("/api/posts")
       .then(res => {
         expect(res.body).to.contain.property("collection");
         expect(res.statusCode).to.equal(200);
-        Post.collection.drop();
         done();
       });
   });
