@@ -6,8 +6,6 @@ const db = require("../../src/db");
 
 const database = new db();
 
-const post = {};
-
 describe("Tests api /posts", async () => {
   before(done => {
     database
@@ -61,7 +59,7 @@ describe("Tests api /posts", async () => {
       .catch(err => done(err));
   });
 
-  it("The post dont have a title.", done => {
+  it("The post dont have a body.", done => {
     request(app)
       .post("/api/post")
       .send({
