@@ -42,5 +42,21 @@ module.exports = {
     } catch (error) {
       return res.status(400).json(error);
     }
+  },
+
+  deleteOnePost: async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      console.log(id);
+      const response = await Post.findByIdAndDelete(id);
+      if (response === null) {
+        return res.status(200).json({ postDoestExist: id });
+      }
+      return res.status(200).json({ postDelete: response._id });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
   }
 };
