@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive --exit",
+    "testWatch": "cross-env NODE_ENV=test mocha --recursive --watch",
     "testsv": "cross-env NODE_ENV=test node src/index.js",
     "start": "cross-env NODE_ENV=prod node src/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon src/index.js"

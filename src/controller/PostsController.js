@@ -1,5 +1,5 @@
 const Post = require("../models/postSchema");
-
+const Comment = require("../models/postsCommentsSchema");
 module.exports = {
   createPost: async (req, res, next) => {
     const newPost = new Post(req.body);
@@ -24,8 +24,27 @@ module.exports = {
       if (posts.length === 0) {
         return await res.status(200).json({ collection: "empty" });
       }
+
+      let postsFormatted = [];
+      posts.map(post => {
+        let comments = [];
+        if (post.commentsId) {
+          post.commentsId.forEach(async i => {
+            const c = await Comment.findById(i.commentId);
+            comments.push(c);
+          });
+          console.log(comments);
+        }
+
+        // console.log(comments);
+        const toPush = { post: post, comments: comments };
+        // console.log(toPush);
+        postsFormatted.push(toPush);
+      });
+
       return res.status(200).json(posts);
     } catch (error) {
+      console.error(error);
       return res.status(400).json(error);
     }
   },
