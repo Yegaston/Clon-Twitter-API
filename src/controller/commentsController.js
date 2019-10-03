@@ -18,7 +18,14 @@ module.exports = {
       } else {
         if (body && author) {
           const r = await newComment.save(comment);
-          return res.status(200).json(r);
+          const commentId = { commentId: r._id };
+
+          const postEdited = await Post.update(
+            { _id: postId },
+            { $push: { commentsId: commentId } }
+          );
+
+          return res.status(200).json(postEdited);
         } else {
           return res.status(400).json({ erorr: "Body, author missing" });
         }
