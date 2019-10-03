@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema({
+const commentSchema = new Schema({
   author: String,
+  postId: String,
   date: { type: Date, default: Date.now },
   body: String,
   meta: {
@@ -10,4 +11,4 @@ const postSchema = new Schema({
     clicks: Number
   }
 });
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Comments", commentSchema);

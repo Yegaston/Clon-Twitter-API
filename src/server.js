@@ -21,6 +21,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/api", require("./routes/posts"));
+app.use("/api/comment", require("./routes/comments"));
 
 async function listen() {
   try {
