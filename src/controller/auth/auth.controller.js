@@ -6,8 +6,6 @@ module.exports = {
     const { email, password, username } = req.body;
     try {
       const hash = await encryptPassword(password);
-      const user = { email, username, hash };
-      const newUser = new User(user);
 
       const e = await User.findOne({ email });
       const u = await User.findOne({ username });
@@ -20,11 +18,12 @@ module.exports = {
       } else if (u) {
         return res.status(400).json({ error: "Username is already taken" });
       } else {
-        const r = await newUser.save();
         const token = await createToken(email, username);
+        const newUser = new User({ email, username, hash, token });
+        const r = await newUser.save();
         console.log(token);
 
-        return res.status(201).json({ userData: r, token });
+        return res.status(201).json(r);
       }
     } catch (error) {
       console.error(error);

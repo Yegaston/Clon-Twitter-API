@@ -15,8 +15,10 @@ describe("Tests api /posts", async () => {
   });
   after(done => {
     database
-      .disconnect()
-      .then(() => done())
+      .dropDb()
+      .then(() => {
+        database.disconnect().then(() => done());
+      })
       .catch(err => done(err));
   });
 
@@ -27,16 +29,7 @@ describe("Tests api /posts", async () => {
       .post("/api/post")
       .send({
         author: "Yegaston",
-        body: "asd",
-        comments: [
-          {
-            body: "Afa afa farte"
-          }
-        ],
-        meta: {
-          likes: 0,
-          clicks: 0
-        }
+        body: "Lo unico raro fue que no imagino lo que podria venirr"
       })
       .then(res => {
         expect(res.body).to.contain.property("_id");
@@ -64,16 +57,7 @@ describe("Tests api /posts", async () => {
       .post("/api/post")
       .send({
         author: "Yegaston",
-        body: "",
-        comments: [
-          {
-            body: "Afa afa farte"
-          }
-        ],
-        meta: {
-          likes: 0,
-          clicks: 0
-        }
+        body: ""
       })
       .then(res => {
         expect(res.body).to.contain.property("error");
