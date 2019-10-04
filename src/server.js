@@ -1,9 +1,6 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const session = require("express-session");
-
-const passport = require("passport");
 
 let sv;
 // Settings
@@ -13,16 +10,10 @@ app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  session({ secret: "lukenpapito", resave: false, saveUninitialized: true })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Routes
-app.use("/api", require("./routes/posts"));
-app.use("/api/comment", require("./routes/comments"));
-
+app.use("/api", require("./routes/posts.routes"));
+app.use("/api/comment", require("./routes/comments.routes"));
+app.use("/api/auth", require("./routes/auth.routes"));
 async function listen() {
   try {
     sv = await app.listen(app.get("port"));

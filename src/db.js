@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+mongoose.set("useCreateIndex", true);
 class database {
   constructor() {}
 

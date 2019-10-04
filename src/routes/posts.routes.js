@@ -4,7 +4,7 @@ const {
   getAllPosts,
   getOnePost,
   deleteOnePost
-} = require("../controller/PostsController");
+} = require("../controller/posts.controller");
 const router = express.Router();
 
 router.get("/", (req, res) => {
