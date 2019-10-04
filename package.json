@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive --exit",
+    "testWatch": "cross-env NODE_ENV=test mocha --recursive --watch",
     "testsv": "cross-env NODE_ENV=test node src/index.js",
     "start": "cross-env NODE_ENV=prod node src/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon src/index.js"
@@ -21,12 +22,14 @@
   },
   "homepage": "https://github.com/Yegaston/Clon-Twitter-API#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cross-env": "^6.0.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.1",
     "morgan": "^1.9.1",
-    "passport-local": "^1.0.0"
+    "node-emoji": "^1.10.0"
   },
   "jest": {
     "testEnvironment": "node",

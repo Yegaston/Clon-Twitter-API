@@ -10,10 +10,10 @@ app.set("port", process.env.PORT || 3000);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 // Routes
-app.use("/api", require("./routes/posts"));
-
+app.use("/api", require("./routes/posts.routes"));
+app.use("/api/comment", require("./routes/comments.routes"));
+app.use("/api/auth", require("./routes/auth.routes"));
 async function listen() {
   try {
     sv = await app.listen(app.get("port"));
