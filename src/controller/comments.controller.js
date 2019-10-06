@@ -15,20 +15,18 @@ module.exports = {
         return res
           .status(400)
           .json({ PostDontExist: "Post dont exist, can comment" });
+      } else if (body && author) {
+        const r = await newComment.save(comment);
+        const commentId = { commentId: r._id };
+
+        const _ = await Post.updateOne(
+          { _id: postId },
+          { $push: { commentsId: commentId } }
+        );
+
+        return res.status(201).json(r);
       } else {
-        if (body && author) {
-          const r = await newComment.save(comment);
-          const commentId = { commentId: r._id };
-
-          const postEdited = await Post.update(
-            { _id: postId },
-            { $push: { commentsId: commentId } }
-          );
-
-          return res.status(200).json(postEdited);
-        } else {
-          return res.status(400).json({ erorr: "Body, author missing" });
-        }
+        return res.status(400).json({ clientError: "Body, author missing" });
       }
     } catch (error) {
       console.error(error);

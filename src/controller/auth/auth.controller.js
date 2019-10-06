@@ -21,8 +21,6 @@ module.exports = {
         const token = await createToken(email, username);
         const newUser = new User({ email, username, hash, token });
         const r = await newUser.save();
-        console.log(token);
-
         return res.status(201).json(r);
       }
     } catch (error) {
