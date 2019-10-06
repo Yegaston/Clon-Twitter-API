@@ -24,9 +24,9 @@ module.exports = {
           { $push: { commentsId: commentId } }
         );
 
-        return res.status(200).json(r);
+        return res.status(201).json(r);
       } else {
-        return res.status(400).json({ erorr: "Body, author missing" });
+        return res.status(400).json({ clientError: "Body, author missing" });
       }
     } catch (error) {
       console.error(error);

@@ -1,62 +1,70 @@
-// const expect = require("chai").expect;
-// const request = require("supertest");
-// const { app } = require("../../src/server");
-// const db = require("../../src/db");
-// const database = new db();
+const expect = require("chai").expect;
+const request = require("supertest");
+const { app } = require("../../src/server");
+const db = require("../../src/db");
+const database = new db();
 
-// describe("tests /api/comment", async () => {
-//   before(done => {
-//     database
-//       .startConnection()
-//       .then(() => done())
-//       .catch(err => done(err));
-//   });
-//   after(done => {
-//     database
-//       .dropDb()
-//       .then(() => {
-//         database.disconnect().then(() => done());
-//       })
-//       .catch(err => done(err));
-//   });
-//   let postId;
-//   it("OK, creating a new post works", done => {
-//     request(app)
-//       .post("/api/post")
-//       .send({
-//         author: "Yegaston",
-//         body: "Lo unico raro fue que no imagino lo que podria venirr"
-//       })
-//       .then(res => {
-//         expect(res.body).to.contain.property("_id");
-//         postId = res.body._id;
-//         done();
-//       })
-//       .catch(err => done(err));
-//   });
+describe("tests /api/comment", async () => {
+  before(done => {
+    database
+      .startConnection()
+      .then(() => done())
+      .catch(err => done(err));
+  });
+  after(done => {
+    database
+      .dropDb()
+      .then(() => {
+        database.disconnect().then(() => done());
+      })
+      .catch(err => done(err));
+  });
 
-//   it("Creating a comment", done => {
-//     request(app)
-//       .post(`/api/comment/${postId}`)
-//       .send({ body: "Soy el comentario", author: "Autor" })
-//       .then(res => {
-//         expect(res.body).to.contain.property("_id");
-//         expect(res.body).to.contain.property("body");
-//         expect(res.body).to.contain.property("author");
-//         done();
+  let postId;
+  it("test can create a comment", done => {
+    request(app)
+      .post("/api/post")
+      .send({
+        author: "yegaston",
+        body: "Buscamos vida en algun lugar, al reparo de un mundo, sin reparo."
+      })
+      .then(res => {
+        postId = res.body._id;
+        request(app)
+          .post(`/api/comment/${postId}`)
+          .send({ author: "Forgi", body: "Soy un comentario." })
+          .then(resC => {
+            expect(resC.statusCode).to.equal(201);
+            expect(resC.body.postId).to.equal(postId);
+            expect(resC.body).to.contain.property("body");
+            expect(resC.body).to.contain.property("author");
+            done();
+          });
+      })
+      .catch(error => done(error));
+  });
 
-//       })
-//       .catch(err => done(err));
-//   });
+  it("test cant create a comment if dont have body and author", done => {
+    request(app)
+      .post(`/api/comment/${postId}`)
+      .send({ body: "", author: "" })
+      .then(res => {
+        expect(res.statusCode).to.equal(400);
+        expect(res.body).to.contain.property("clientError");
+        done();
+      })
+      .catch(err => done(err));
+  });
 
-//   it("If not body and autor retunr error?", done => {
-//     request(app)
-//       .post(`/api/comment/${postId}`)
-//       .send({ body: "", author: "" })
-//       .then(res => {
-//         expect(res.statusCode).to.equal(400);
-//         done();
-//       })
-//       .catch(err => done(err));
-//   });
-// });
+  it("test cant create a comment if dont have body and author", done => {
+    request(app)
+      .post(`/api/comment/5d9942720fb41336e4c72dc2`)
+      .send({ body: "asd", author: "ads" })
+      .then(res => {
+        expect(res.statusCode).to.equal(400);
+        expect(res.body).to.contain.property("PostDontExist");
+        done();
+      })
+      .catch(err => done(err));
+  });
+});

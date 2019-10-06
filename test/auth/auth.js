@@ -11,6 +11,7 @@ describe("testing register", () => {
       .then(() => done())
       .catch(err => done(err));
   });
+
   after(done => {
     database
       .dropDb()
