@@ -2,7 +2,9 @@ const Post = require("../models/postSchema");
 const Comment = require("../models/postsCommentsSchema");
 module.exports = {
   createPost: async (req, res, next) => {
-    const newPost = new Post(req.body);
+    const { username } = res.locals.userData;
+    const { body } = req.body;
+    const newPost = new Post({ body, author: username });
     if (req.body.body.length <= 0) {
       res.status(400).json({ error: "Bad post" });
     } else {

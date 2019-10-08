@@ -5,6 +5,7 @@ const {
   getOnePost,
   deleteOnePost
 } = require("../controller/posts.controller");
+const isValid = require("../controller/auth/isAuthMiddleware");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -14,7 +15,7 @@ router.get("/", (req, res) => {
 
 router.get("/posts", getAllPosts);
 router.get("/post/:id", getOnePost);
-router.post("/post", createPost);
+router.post("/post", isValid, createPost);
 router.delete("/post/:id", deleteOnePost);
 
 module.exports = router;
