@@ -21,27 +21,41 @@ describe("tests /api/comment", async () => {
   });
 
   let postId;
-  it("test can create a comment", done => {
+
+  it("OK, creating a new comment works", done => {
     request(app)
-      .post("/api/post")
+      .post("/api/auth/register")
       .send({
-        author: "yegaston",
-        body: "Buscamos vida en algun lugar, al reparo de un mundo, sin reparo."
+        email: "test@test.com",
+        password: "test123test",
+        username: "testea2"
       })
       .then(res => {
-        postId = res.body._id;
+        expect(res.statusCode).to.equal(201);
+        expect(res.body).to.contain.property("token");
+        token = res.body.token;
         request(app)
-          .post(`/api/comment/${postId}`)
-          .send({ author: "Forgi", body: "Soy un comentario." })
-          .then(resC => {
-            expect(resC.statusCode).to.equal(201);
-            expect(resC.body.postId).to.equal(postId);
-            expect(resC.body).to.contain.property("body");
-            expect(resC.body).to.contain.property("author");
-            done();
+          .post("/api/post")
+          .send({
+            body: "Lo unico raro fue que no imagino lo que podria venirr"
+          })
+          .set({ Authorization: token })
+          .then(res => {
+            postId = res.body._id;
+            expect(res.statusCode).to.equal(201);
+            request(app)
+              .post(`/api/comment/${postId}`)
+              .send({ author: "Forgi", body: "Soy un comentario." })
+              .then(resC => {
+                expect(resC.statusCode).to.equal(201);
+                expect(resC.body.postId).to.equal(postId);
+                expect(resC.body).to.contain.property("body");
+                expect(resC.body).to.contain.property("author");
+                done();
+              });
           });
       })
-      .catch(error => done(error));
+      .catch(err => done(err));
   });
 
   it("test cant create a comment if dont have body and author", done => {

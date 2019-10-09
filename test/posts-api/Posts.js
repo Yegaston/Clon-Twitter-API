@@ -6,13 +6,14 @@ const db = require("../../src/db");
 
 const database = new db();
 
-describe("Tests api /posts", async () => {
+describe.only("Tests api /posts", async () => {
   before(done => {
     database
       .startConnection()
       .then(() => done())
       .catch(err => done(err));
   });
+
   after(done => {
     database
       .dropDb()
@@ -21,21 +22,35 @@ describe("Tests api /posts", async () => {
       })
       .catch(err => done(err));
   });
-
   let postId;
-
-  it("OK, creating a new post works", done => {
+  let token;
+  it.only("OK, creating a new post works", done => {
     request(app)
-      .post("/api/post")
+      .post("/api/auth/register")
       .send({
-        author: "Yegaston",
-        body: "Lo unico raro fue que no imagino lo que podria venirr"
+        email: "test@test.com",
+        password: "test123test",
+        username: "testea2"
       })
       .then(res => {
-        expect(res.body).to.contain.property("_id");
-        postId = res.body._id;
+        console.log("depuring ->> ", res);
         expect(res.statusCode).to.equal(201);
-        done();
+        expect(res.body).to.contain.property("token");
+        token = res.body.token;
+        request(app)
+          .post("/api/post")
+          .send({
+            body: "Lo unico raro fue que no imagino lo que podria venirr"
+          })
+          .set({ Authorization: token })
+          .then(res => {
+            expect(res.body).to.contain.property("_id");
+            expect(res.body).to.contain.property("author");
+            expect(res.body.author).to.equal("testea2");
+            postId = res.body._id;
+            expect(res.statusCode).to.equal(201);
+            done();
+          });
       })
       .catch(err => done(err));
   });
@@ -59,6 +74,7 @@ describe("Tests api /posts", async () => {
         author: "Yegaston",
         body: ""
       })
+      .set({ Authorization: token })
       .then(res => {
         expect(res.body).to.contain.property("error");
         expect(res.statusCode).to.equal(400);
