@@ -14,17 +14,17 @@ describe("Tests api /posts", () => {
       .catch(err => done(err));
   });
 
-  after(done => {
-    database
-      .endTest()
-      .then(() => {
-        done();
-      })
-      .catch(err => {
-        done(err);
-        console.error(err);
-      });
-  });
+  // after(done => {
+  //   database
+  //     .endTest()
+  //     .then(() => {
+  //       done();
+  //     })
+  //     .catch(err => {
+  //       done(err);
+  //       console.error(err);
+  //     });
+  // });
 
   let postId;
   let token;
