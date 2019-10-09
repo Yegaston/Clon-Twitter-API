@@ -17,23 +17,24 @@ class database {
     }
   }
 
-  async disconnect() {
+  async endTest() {
     const dbName = `twitterclon${process.env.NODE_ENV}`;
+
     try {
+      await mongoose.connection.db.dropDatabase();
+      console.log(
+        "\x1b[33m",
+        `${emoji.get("warning")}  -> twitterclon${
+          process.env.NODE_ENV
+        } has been droped`
+      );
       await mongoose.disconnect();
-      console.log(`${emoji.get("warning")}  ->  Close connection to database - ${dbName}`);
-    } catch (err) {
-      console.error(err);
+      console.log(
+        `${emoji.get("warning")}  ->  Close connection to database - ${dbName}`
+      );
+    } catch (error) {
+      console.error(error);
     }
-  }
-  async dropDb() {
-    await mongoose.connection.db.dropDatabase();
-    console.log(
-      "\x1b[33m",
-      `${emoji.get("warning")}  -> twitterclon${
-        process.env.NODE_ENV
-      } has been droped`
-    );
   }
 }
 
