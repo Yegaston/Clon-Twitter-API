@@ -105,6 +105,7 @@ describe("Tests api /posts", () => {
   it("Can delete post", done => {
     request(app)
       .delete(`/api/post/${postId}`)
+      .set({ Authorization: `Bearer ${token}` })
       .then(res => {
         expect(res.body.postDelete).to.equal(postId);
         expect(res.statusCode).to.equal(200);
@@ -116,6 +117,7 @@ describe("Tests api /posts", () => {
   it("Can delete post", done => {
     request(app)
       .delete(`/api/post/${postId}`)
+      .set({ Authorization: `Bearer ${token}` })
       .then(res => {
         expect(res.body).to.contain.property("postDoestExist");
         expect(res.statusCode).to.equal(200);

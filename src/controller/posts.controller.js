@@ -67,13 +67,22 @@ module.exports = {
 
   deleteOnePost: async (req, res, next) => {
     const { id } = req.params;
+    const { username } = res.locals.userData;
 
     try {
-      const response = await Post.findByIdAndDelete(id);
+      const response = await Post.findById(id);
       if (response === null) {
         return res.status(200).json({ postDoestExist: id });
+      } else {
+        if (response.author === username) {
+          const postDeleted = await Post.findByIdAndDelete(id);
+          return res.status(200).json({ postDelete: postDeleted._id });
+        } else {
+          return res
+            .status(401)
+            .json({ unauthorized: "You cant deleted a post if no your own" });
+        }
       }
-      return res.status(200).json({ postDelete: response._id });
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
