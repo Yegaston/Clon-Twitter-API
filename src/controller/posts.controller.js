@@ -55,7 +55,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const post = await Post.find({ _id: id });
+      const post = await Post.findById(id);
       if (post.length === 0) {
         return await res.status(200).json({ postDoestExist: id });
       }
@@ -69,7 +69,6 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      console.log(id);
       const response = await Post.findByIdAndDelete(id);
       if (response === null) {
         return res.status(200).json({ postDoestExist: id });
