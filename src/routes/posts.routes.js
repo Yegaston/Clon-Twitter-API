@@ -16,6 +16,6 @@ router.get("/", (req, res) => {
 router.get("/posts", getAllPosts);
 router.get("/post/:id", getOnePost);
 router.post("/post", isValid, createPost);
-router.delete("/post/:id", deleteOnePost);
+router.delete("/post/:id", isValid, deleteOnePost);
 
 module.exports = router;
