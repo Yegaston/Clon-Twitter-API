@@ -2,9 +2,12 @@ const Comment = require("../models/postsCommentsSchema");
 const Post = require("../models/postSchema");
 
 module.exports = {
+  // TODO Get one or multiples comments from a array and returned it
   newComment: async (req, res, next) => {
     const { postId } = req.params;
-    const { body, author } = req.body;
+    const { body } = req.body;
+    const { username } = res.locals.userData;
+    const author = username;
     const comment = { postId, body, author };
     const newComment = new Comment(comment);
 
