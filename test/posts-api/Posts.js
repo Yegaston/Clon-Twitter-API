@@ -10,7 +10,9 @@ describe("Tests api /posts", () => {
   before(done => {
     database
       .startConnection()
-      .then(() => done())
+      .then(() => {
+        done();
+      })
       .catch(err => done(err));
   });
 
